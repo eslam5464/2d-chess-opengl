@@ -1,6 +1,6 @@
 #ifndef SHAPES_H_INCLUDED
 #define SHAPES_H_INCLUDED
-#include<iostream>
+//#include<iostream>
 
 void draw_square(int startX, int startY, double widthX, double heightY, double col[]);
 void draw_tri(int startX, int startY, double width_x, double height_y, int quadPos, double col[3]);

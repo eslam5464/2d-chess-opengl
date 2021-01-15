@@ -97,6 +97,17 @@ void draw_piecePawn(bool Enable, int startX, int startY, double width_x, double 
 	if (Enable) {
 		double col[3] = { r,g,b };
 
+		double col1[3] = { 0.24,0.9,0.12 };
+		double col2[3] = { 0.4,0.5,0.2 };
+		double col3[3] = { 0.57,0.5,0.92 };
+		double col4[3] = { 0.7,0.45,0.2 };
+		double col5[3] = { 0.27,0.5,0.32 };
+		double col6[3] = { 0.67,0.85,0.9 };
+		double col7[3] = { 0.49,0.1,0.2 };
+		double col8[3] = { 0.657,0.5,0.4 };
+		double col9[3] = { 0.78,0.45,0.2 };
+		double col10[3] = { 0.217,0.5,0.832 };
+
 		draw_square(startX + (width_x*0.1), startY + ((4 * height_y) / 5), 0.8*width_x, (2 * height_y) / 15, col);//top big box
 
 		draw_square(startX + (0.4 * width_x), startY + ((14 * height_y) / 15), 0.2*width_x, height_y / 15, col);//top small box
@@ -159,23 +170,23 @@ void draw_pieceBishop(bool Enable, int startX, int startY, double width_x, doubl
 
 		draw_square(startX, startY, width_x, height_y / 5, col);//base
 
+		draw_tri(startX + (width_x* 0.66), startY + (height_y / 5), (width_x * 2) / 13, height_y / 4, 1, col);//right lower triangle
+
+		draw_tri(startX + (width_x / 3), startY + (height_y / 5), (width_x * 2) / 13, height_y / 4, 2, col);//left lower triangle
+
+		draw_tri(startX + (width_x / 2), startY + ((4 * height_y) / 5), width_x / 6, height_y / 5, 2, col);//upper top left triangle
+
+		draw_tri(startX + (width_x / 2), startY + ((4 * height_y) / 5), width_x / 6, height_y / 5, 1, col);//upper top right triangle
+
+		draw_tri(startX + ((2 * width_x) / 3), startY + ((4 * height_y) / 5), width_x / 7, height_y / 5, 4, col);//down top right triangle
+
+		draw_tri(startX + (width_x / 3), startY + ((4 * height_y) / 5), width_x / 7, height_y / 5, 3, col);//down top left triangle		
 	}
 }
 
 void draw_pieceQueen(bool Enable, int startX, int startY, double width_x, double height_y, double r, double g, double b) {
 	if (Enable) {
 		double col[3] = { r,g,b };
-
-		double col1[3] = { 0.24,0.9,0.12 };
-		double col2[3] = { 0.4,0.5,0.2 };
-		double col3[3] = { 0.57,0.5,0.92 };
-		double col4[3] = { 0.7,0.45,0.2 };
-		double col5[3] = { 0.27,0.5,0.32 };
-		double col6[3] = { 0.67,0.85,0.9 };
-		double col7[3] = { 0.49,0.1,0.2 };
-		double col8[3] = { 0.657,0.5,0.4 };
-		double col9[3] = { 0.78,0.45,0.2 };
-		double col10[3] = { 0.217,0.5,0.832 };
 
 		draw_square(startX + (width_x*0.45), startY + (height_y - ((5 * height_y) / 30)), 0.1*width_x, (3 * height_y) / 30, col);//top box
 
@@ -197,14 +208,63 @@ void draw_pieceQueen(bool Enable, int startX, int startY, double width_x, double
 
 		draw_tri(startX + (width_x* 0.66), startY + (height_y - (height_y / 5)), 0.2*width_x, (2 * height_y) / 30, 4, col);//right lower top
 
-		draw_tri(startX + (width_x* 0.5), startY + (height_y - ((2 * height_y) / 30)), 0.2*width_x, (2 * height_y) / 30, 1, col);//top right
+		draw_tri(startX + (width_x* 0.5), startY + (height_y - ((2 * height_y) / 30)), 0.1*width_x, (2 * height_y) / 30, 1, col);//top right
 
-		draw_tri(startX + (width_x* 0.5), startY + (height_y - ((2 * height_y) / 30)), 0.2*width_x, (2 * height_y) / 30, 2, col);//top left
+		draw_tri(startX + (width_x* 0.5), startY + (height_y - ((2 * height_y) / 30)), 0.1*width_x, (2 * height_y) / 30, 2, col);//top left
+
+		draw_tri(startX + (width_x* 0.25), startY + ((5 * height_y) / 6), 0.05*width_x, (2 * height_y) / 30, 2, col);//top left (left)
+
+		draw_tri(startX + (width_x* 0.25), startY + ((5 * height_y) / 6), 0.05*width_x, (2 * height_y) / 30, 1, col);//top left (right)
+
+		draw_tri(startX + (width_x* 0.75), startY + ((5 * height_y) / 6), 0.05*width_x, (2 * height_y) / 30, 2, col);//top right (left)
+
+		draw_tri(startX + (width_x* 0.75), startY + ((5 * height_y) / 6), 0.05*width_x, (2 * height_y) / 30, 1, col);//top right (right)
 	}
 }
 
 void draw_pieceKnight(bool Enable, int startX, int startY, double width_x, double height_y, double r, double g, double b) {
+	double col[3] = { r,g,b };
 
+	double col1[3] = { 0.24,0.9,0.12 };
+	double col2[3] = { 0.4,0.5,0.2 };
+	double col3[3] = { 0.57,0.5,0.92 };
+	double col4[3] = { 0.7,0.45,0.2 };
+	double col5[3] = { 0.27,0.5,0.32 };
+	double col6[3] = { 0.67,0.85,0.9 };
+	double col7[3] = { 0.49,0.1,0.2 };
+	double col8[3] = { 0.657,0.5,0.4 };
+	double col9[3] = { 0.78,0.45,0.2 };
+	double col10[3] = { 0.217,0.5,0.832 };
+
+	draw_square(startX + ((width_x) / 3), startY + (3 * height_y) / 5, width_x / 3, (height_y) / 5, col);//top mid
+
+	draw_square(startX + ((width_x * 2) / 3), startY + (2.5 * height_y) / 5, (1 * width_x) / 3, (1.5 * height_y) / 5, col);//mid right
+
+	draw_square(startX + (width_x / 3), startY + (height_y / 5), width_x / 3, height_y / 5, col);//between top and base
+
+	draw_square(startX, startY, width_x, height_y / 5, col);//base
+
+	draw_tri(startX + ((width_x * 2) / 3), startY + (2 * height_y) / 5, width_x / 3, (height_y) / 5, 2, col);//bottom mid
+
+	draw_tri(startX + ((width_x * 2) / 3), startY + (2.5 * height_y) / 5, (1 * width_x) / 3, (height_y) / 10, 4, col);//bottom right
+
+	draw_tri(startX + ((width_x*2.5) / 3), startY + (height_y - (height_y / 5)), (1.5*width_x) / 3, (height_y) / 5, 2, col);//upper right (on the left)
+
+	//draw_tri(startX + ((width_x*2.5) / 3), startY + (height_y - (height_y / 5)), width_x / 6, (height_y) / 5, 1, col);//upper right 2nd
+
+	draw_tri(startX + (width_x* 0.66), startY + (height_y / 5), (width_x * 0.5) / 13, height_y / 6, 1, col);//right lower triangle
+
+	draw_tri(startX + (width_x / 3), startY + (height_y / 5), (width_x * 2) / 13, height_y / 6, 2, col);//left lower triangle
+
+	//draw_tri(startX + ((width_x) / 3), startY + (height_y - (height_y / 5)), (1.5*width_x) / 6, (height_y) / 5, 1, col);//test
+
+	draw_tri(startX + ((width_x) / 3), startY + (height_y - (2 * height_y / 5)), (1 * width_x) / 6, (height_y) / 5, 2, col);//test
+
+	draw_square(startX, startY, width_x, height_y / 5, col);//base
+
+	draw_tri(startX + (2.5*width_x / 3), startY + (height_y / 5), (2 * width_x) / 3, (3 * height_y) / 5, 2, col);//above base
+
+	//draw_tri(startX + (width_x / 2), startY + ((4 * height_y) / 5), (1 * width_x) / 3, (1.5 * height_y) / 5, 4, col4);//test 
 }
 
 void draw_line(int x1, int y1, int x2, int y2, float r, float g, float b)

@@ -79,7 +79,7 @@ struct info
 	double x, y;
 	double width_x, height_y;
 	bool enabled, moveStatus, placed;
-	char movePos;
+	char movePos, movePosDiag;
 }chessPiece[16], chessDefault[16];
 
 void getCellState() {
@@ -94,8 +94,8 @@ void getCellState() {
 			printString("false", cellUsed[i].startX + 20, cellUsed[i].startY + 20, 1, 0, 0);
 		}
 
-	}*/
-
+	}
+*/
 }
 
 
@@ -107,7 +107,7 @@ void initialize() {
 
 	for (int i = 0; i < 16; i++) {
 		chessPiece[i].id = i;
-		chessPiece[i].enabled = false;//change
+		chessPiece[i].enabled = true;//change
 		chessPiece[i].y = floor(i / 8);
 		chessPiece[i].x = i % 8;
 		chessPiece[i].atCellNo = i;
@@ -116,7 +116,7 @@ void initialize() {
 		chessPiece[i].height_y = pieceHeight_y;
 
 		chessDefault[i].id = i;
-		chessDefault[i].enabled = false;//change
+		chessDefault[i].enabled = true;//change
 		chessDefault[i].y = floor(i / 8);
 		chessDefault[i].x = i % 8;
 		chessDefault[i].atCellNo = i;
@@ -124,7 +124,7 @@ void initialize() {
 		chessDefault[i].width_x = pieceWidth_x;
 		chessDefault[i].height_y = pieceHeight_y;
 
-		cellUsed[i].used = false;//change
+		cellUsed[i].used = true;//change
 	}
 
 	for (int i = 0; i < 64; i++) {
@@ -148,8 +148,6 @@ void initialize() {
 }
 
 void putPieces() {
-
-
 	if (chessPiece[0].enabled == true)//rook1
 		draw_pieceRook(chessPiece[0].enabled, cellUsed[chessPiece[0].atCellNo].startX, cellUsed[chessPiece[0].atCellNo].startY,
 					   chessPiece[0].width_x, chessPiece[0].height_y, col1[0], col1[1], col1[2]);
@@ -229,10 +227,20 @@ void addInfo() {
 	//syncChessData(4);
 	//cellUsed[chessPiece[4].atCellNo].used = true;
 
-	chessPiece[2].enabled = true;//bishop1
-	chessPiece[2].atCellNo = 10;
-	syncChessData(2);
-	cellUsed[chessPiece[2].atCellNo].used = true;
+	//chessPiece[2].enabled = true;//bishop1
+	//chessPiece[2].atCellNo = 30;
+	//syncChessData(2);
+	//cellUsed[chessPiece[2].atCellNo].used = true;
+
+	//chessPiece[5].enabled = true;//bishop2
+	//chessPiece[5].atCellNo = 20;
+	//syncChessData(5);
+	//cellUsed[chessPiece[5].atCellNo].used = true;
+
+	//chessPiece[1].enabled = true;//knight
+	//chessPiece[1].atCellNo = 27;
+	//syncChessData(1);
+	//cellUsed[chessPiece[1].atCellNo].used = true;
 }
 
 void mainCode(int flag) {
@@ -380,6 +388,158 @@ void mainCode(int flag) {
 		getCellState();
 	}
 
+	//knights
+	if (flag == 1 || flag == 6) {
+		draw_board(actWidth_X, actheight_Y, 8, 8);
+
+		if (!chessPiece[flag].moveStatus)
+			draw_pieceKnight(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+							 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+		else {
+			if (chessPiece[flag].movePos == 'u') {
+				if (chessPiece[flag].movePosDiag == 'r' || chessPiece[flag].movePosDiag == 'l') {
+					cellUsed[chessPiece[flag].atCellNo].used = false;
+					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+					cellUsed[chessPiece[flag].atCellNo].used = true;
+					syncChessData(flag);
+					draw_pieceKnight(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+									 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+				}
+			}
+
+			if (chessPiece[flag].movePos == 'd') {
+				if (chessPiece[flag].movePosDiag == 'r' || chessPiece[flag].movePosDiag == 'l') {
+					cellUsed[chessPiece[flag].atCellNo].used = false;
+					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+					cellUsed[chessPiece[flag].atCellNo].used = true;
+					syncChessData(flag);
+					draw_pieceKnight(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+									 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+				}
+			}
+
+			if (chessPiece[flag].movePos == 'r') {
+				if (chessPiece[flag].movePosDiag == 'u' || chessPiece[flag].movePosDiag == 'd') {
+					cellUsed[chessPiece[flag].atCellNo].used = false;
+					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+					cellUsed[chessPiece[flag].atCellNo].used = true;
+					syncChessData(flag);
+					draw_pieceKnight(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+									 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+				}
+			}
+
+			if (chessPiece[flag].movePos == 'l') {
+				if (chessPiece[flag].movePosDiag == 'u' || chessPiece[flag].movePosDiag == 'd') {
+					cellUsed[chessPiece[flag].atCellNo].used = false;
+					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+					cellUsed[chessPiece[flag].atCellNo].used = true;
+					syncChessData(flag);
+					draw_pieceKnight(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+									 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+				}
+			}
+
+			chessPiece[flag].movePos = 's';
+			chessPiece[flag].movePosDiag = 's';
+			chessPiece[flag].moveStatus = false;
+			chessPiece[flag].movCount = 0;
+		}
+
+		draw_box(cellUsed[chessPiece[flag].atCellNo].startX - (pieceWidth_x * 0.05), cellUsed[chessPiece[flag].atCellNo].startY - (pieceHeight_y * 0.05),
+				 1.1* pieceWidth_x, 1.1*pieceHeight_y, col2[0], col2[1], col2[2]);
+		draw_box(cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY, pieceWidth_x, pieceHeight_y, col2[0], col2[1], col2[2]);
+
+		//up
+		int count = 8;
+		while (count < 16 && chessPiece[flag].atCellNo + count < 64)
+			count += 8;
+
+		if (count == 16) {
+			if ((chessPiece[flag].atCellNo + count + 1) % 8 != 0 && (chessPiece[flag].atCellNo + count + 1) < 64 && !cellUsed[chessPiece[flag].atCellNo + count + 1].used)
+				draw_box(cellUsed[chessPiece[flag].atCellNo + count + 1].startX - (pieceWidth_x * 0.05),
+						 cellUsed[chessPiece[flag].atCellNo + count + 1].startY - (pieceHeight_y * 0.05),
+						 1.1* pieceWidth_x, 1.1*pieceHeight_y, col9[0], col9[1], col9[2]);
+
+			if ((chessPiece[flag].atCellNo + count - 1) % 8 != 7 && (chessPiece[flag].atCellNo + count - 1) < 64 && !cellUsed[chessPiece[flag].atCellNo + count - 1].used) {
+				draw_box(cellUsed[chessPiece[flag].atCellNo + count - 1].startX - (pieceWidth_x * 0.05),
+						 cellUsed[chessPiece[flag].atCellNo + count - 1].startY - (pieceHeight_y * 0.05),
+						 1.1* pieceWidth_x, 1.1*pieceHeight_y, col9[0], col9[1], col9[2]);
+			}
+		}
+
+		//down
+		count = -8;
+		while (count > -16 && chessPiece[flag].atCellNo + count > 0)
+			count -= 8;
+
+		if (count == -16) {
+			if ((chessPiece[flag].atCellNo + count + 1) % 8 != 0 && (chessPiece[flag].atCellNo + count + 1) > 0 && !cellUsed[chessPiece[flag].atCellNo + count + 1].used)
+				draw_box(cellUsed[chessPiece[flag].atCellNo + count + 1].startX - (pieceWidth_x * 0.05),
+						 cellUsed[chessPiece[flag].atCellNo + count + 1].startY - (pieceHeight_y * 0.05),
+						 1.1* pieceWidth_x, 1.1*pieceHeight_y, col9[0], col9[1], col9[2]);
+
+			if ((chessPiece[flag].atCellNo + count - 1) % 8 != 7 && (chessPiece[flag].atCellNo + count - 1) > 0 && !cellUsed[chessPiece[flag].atCellNo + count - 1].used) {
+				draw_box(cellUsed[chessPiece[flag].atCellNo + count - 1].startX - (pieceWidth_x * 0.05),
+						 cellUsed[chessPiece[flag].atCellNo + count - 1].startY - (pieceHeight_y * 0.05),
+						 1.1* pieceWidth_x, 1.1*pieceHeight_y, col9[0], col9[1], col9[2]);
+			}
+		}
+
+		//right
+		count = 1;
+		if ((chessPiece[flag].atCellNo) % 8 != 7) {
+			while (count < 2 && chessPiece[flag].atCellNo + count < 64) {
+				if ((chessPiece[flag].atCellNo + count) % 8 == 7) {
+					break;
+				}
+				count++;
+			}
+		}
+
+		if (count == 2) {
+			if ((chessPiece[flag].atCellNo + count + 8) < 64 && !cellUsed[chessPiece[flag].atCellNo + count + 8].used)
+				draw_box(cellUsed[chessPiece[flag].atCellNo + count + 8].startX - (pieceWidth_x * 0.05),
+						 cellUsed[chessPiece[flag].atCellNo + count + 8].startY - (pieceHeight_y * 0.05),
+						 1.1* pieceWidth_x, 1.1*pieceHeight_y, col9[0], col9[1], col9[2]);
+
+			if ((chessPiece[flag].atCellNo + count - 8) >= 0 && !cellUsed[chessPiece[flag].atCellNo + count - 8].used) {
+				draw_box(cellUsed[chessPiece[flag].atCellNo + count - 8].startX - (pieceWidth_x * 0.05),
+						 cellUsed[chessPiece[flag].atCellNo + count - 8].startY - (pieceHeight_y * 0.05),
+						 1.1* pieceWidth_x, 1.1*pieceHeight_y, col9[0], col9[1], col9[2]);
+			}
+		}
+
+		//left
+		count = -1;
+		if ((chessPiece[flag].atCellNo) % 8 != 0) {
+			while (count > -2 && chessPiece[flag].atCellNo + count < 64) {
+				if ((chessPiece[flag].atCellNo + count) % 8 == 0) {
+					break;
+				}
+				count--;
+			}
+
+			if (count == -2) {
+				if ((chessPiece[flag].atCellNo + count + 8) < 64 && !cellUsed[chessPiece[flag].atCellNo + count + 8].used)
+					draw_box(cellUsed[chessPiece[flag].atCellNo + count + 8].startX - (pieceWidth_x * 0.05),
+							 cellUsed[chessPiece[flag].atCellNo + count + 8].startY - (pieceHeight_y * 0.05),
+							 1.1* pieceWidth_x, 1.1*pieceHeight_y, col9[0], col9[1], col9[2]);
+
+				if ((chessPiece[flag].atCellNo + count - 8) >= 0 && !cellUsed[chessPiece[flag].atCellNo + count - 8].used) {
+					draw_box(cellUsed[chessPiece[flag].atCellNo + count - 8].startX - (pieceWidth_x * 0.05),
+							 cellUsed[chessPiece[flag].atCellNo + count - 8].startY - (pieceHeight_y * 0.05),
+							 1.1* pieceWidth_x, 1.1*pieceHeight_y, col9[0], col9[1], col9[2]);
+				}
+			}
+		}
+
+		wait4move = true;
+		flag = 99;
+		putPieces();
+		getCellState();
+	}
+
 	//bishops
 	if (flag == 2 || flag == 5) {
 		draw_board(actWidth_X, actheight_Y, 8, 8);
@@ -389,7 +549,50 @@ void mainCode(int flag) {
 							 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
 
 		else {
-			//----
+			if (chessPiece[flag].movePos == 'r') {
+				if (chessPiece[flag].movePosDiag == 'u') {
+					cellUsed[chessPiece[flag].atCellNo].used = false;
+					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+					cellUsed[chessPiece[flag].atCellNo].used = true;
+					syncChessData(flag);
+					draw_pieceBishop(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+									 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+				}
+
+				if (chessPiece[flag].movePosDiag == 'd') {
+					cellUsed[chessPiece[flag].atCellNo].used = false;
+					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+					cellUsed[chessPiece[flag].atCellNo].used = true;
+					syncChessData(flag);
+					draw_pieceBishop(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+									 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+				}
+			}
+
+			if (chessPiece[flag].movePos == 'l') {
+				if (chessPiece[flag].movePosDiag == 'u') {
+					cellUsed[chessPiece[flag].atCellNo].used = false;
+					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+					cellUsed[chessPiece[flag].atCellNo].used = true;
+					syncChessData(flag);
+					draw_pieceBishop(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+									 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+				}
+
+				if (chessPiece[flag].movePosDiag == 'd') {
+					cellUsed[chessPiece[flag].atCellNo].used = false;
+					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+					cellUsed[chessPiece[flag].atCellNo].used = true;
+					syncChessData(flag);
+					draw_pieceBishop(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+									 chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+				}
+			}
+
+			chessPiece[flag].movePos = 's';
+			chessPiece[flag].movePosDiag = 's';
+			chessPiece[flag].moveStatus = false;
+			chessPiece[flag].movCount = 0;
 		}
 
 		draw_box(cellUsed[chessPiece[flag].atCellNo].startX - (pieceWidth_x * 0.05), cellUsed[chessPiece[flag].atCellNo].startY - (pieceHeight_y * 0.05),
@@ -512,59 +715,109 @@ void mainCode(int flag) {
 							chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
 		else
 		{
-			switch (chessPiece[flag].movePos) {
+			if (chessPiece[flag].movePosDiag == 's') {
+				switch (chessPiece[flag].movePos) {
 
-			case 'r':
-				if ((chessPiece[flag].x + chessPiece[flag].movCount) < 8) {
-					cellUsed[chessPiece[flag].atCellNo].used = false;
-					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
-					cellUsed[chessPiece[flag].atCellNo].used = true;
-					syncChessData(flag);
-					draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
-									chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+				case 'r':
+					if ((chessPiece[flag].x + chessPiece[flag].movCount) < 8) {
+						cellUsed[chessPiece[flag].atCellNo].used = false;
+						chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+						cellUsed[chessPiece[flag].atCellNo].used = true;
+						syncChessData(flag);
+						draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+										chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+					}
+					break;
+
+				case'l':
+					if ((chessPiece[flag].x - chessPiece[flag].movCount) >= 0) {
+						cellUsed[chessPiece[flag].atCellNo].used = false;
+						chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+						cellUsed[chessPiece[flag].atCellNo].used = true;
+						syncChessData(flag);
+						draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+										chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+					}
+					break;
+
+				case'u':
+					if ((chessPiece[flag].atCellNo + chessPiece[flag].movCount) < 64) {
+						cellUsed[chessPiece[flag].atCellNo].used = false;
+						chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+						cellUsed[chessPiece[flag].atCellNo].used = true;
+						syncChessData(flag);
+						draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+										chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+					}
+					break;
+
+				case'd':
+					if ((chessPiece[flag].atCellNo + chessPiece[flag].movCount) >= 0) {
+						cellUsed[chessPiece[flag].atCellNo].used = false;
+						chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+						cellUsed[chessPiece[flag].atCellNo].used = true;
+						syncChessData(flag);
+						draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+										chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+					}
+					break;
+
+				default:
+					break;
+
 				}
-				break;
-
-			case'l':
-				if ((chessPiece[flag].x - chessPiece[flag].movCount) >= 0) {
-					cellUsed[chessPiece[flag].atCellNo].used = false;
-					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
-					cellUsed[chessPiece[flag].atCellNo].used = true;
-					syncChessData(flag);
-					draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
-									chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
-				}
-				break;
-
-			case'u':
-				if ((chessPiece[flag].atCellNo + chessPiece[flag].movCount) < 64) {
-					cellUsed[chessPiece[flag].atCellNo].used = false;
-					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
-					cellUsed[chessPiece[flag].atCellNo].used = true;
-					syncChessData(flag);
-					draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
-									chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
-				}
-				break;
-
-			case'd':
-				if ((chessPiece[flag].atCellNo + chessPiece[flag].movCount) >= 0) {
-					cellUsed[chessPiece[flag].atCellNo].used = false;
-					chessPiece[flag].atCellNo += chessPiece[flag].movCount;
-					cellUsed[chessPiece[flag].atCellNo].used = true;
-					syncChessData(flag);
-					draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
-									chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
-				}
-				break;
-
-			default:
-				break;
-
+				chessPiece[flag].moveStatus = false;
+				chessPiece[flag].movePos = 's';
+				chessPiece[flag].movCount = 0;
 			}
-			chessPiece[flag].moveStatus = false;
-			chessPiece[flag].movePos = 's';
-			chessPiece[flag].movCount = 0;
+			else
+			{
+				if (chessPiece[flag].movePos == 'r') {
+					if (chessPiece[flag].movePosDiag == 'u') {
+						cellUsed[chessPiece[flag].atCellNo].used = false;
+						chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+						cellUsed[chessPiece[flag].atCellNo].used = true;
+						syncChessData(flag);
+						draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+										chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+					}
+
+					if (chessPiece[flag].movePosDiag == 'd') {
+						cellUsed[chessPiece[flag].atCellNo].used = false;
+						chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+						cellUsed[chessPiece[flag].atCellNo].used = true;
+						syncChessData(flag);
+						draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+										chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+					}
+				}
+
+				if (chessPiece[flag].movePos == 'l') {
+					if (chessPiece[flag].movePosDiag == 'u') {
+						cellUsed[chessPiece[flag].atCellNo].used = false;
+						chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+						cellUsed[chessPiece[flag].atCellNo].used = true;
+						syncChessData(flag);
+						draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+										chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+					}
+
+					if (chessPiece[flag].movePosDiag == 'd') {
+						cellUsed[chessPiece[flag].atCellNo].used = false;
+						chessPiece[flag].atCellNo += chessPiece[flag].movCount;
+						cellUsed[chessPiece[flag].atCellNo].used = true;
+						syncChessData(flag);
+						draw_pieceQueen(chessPiece[flag].enabled, cellUsed[chessPiece[flag].atCellNo].startX, cellUsed[chessPiece[flag].atCellNo].startY,
+										chessPiece[flag].width_x, chessPiece[flag].height_y, col1[0], col1[1], col1[2]);
+					}
+				}
+
+				chessPiece[flag].movePos = 's';
+				chessPiece[flag].movePosDiag = 's';
+				chessPiece[flag].moveStatus = false;
+				chessPiece[flag].movCount = 0;
+			}
+
 		}
 
 		draw_box(cellUsed[chessPiece[flag].atCellNo].startX - (pieceWidth_x * 0.05), cellUsed[chessPiece[flag].atCellNo].startY - (pieceHeight_y * 0.05),
@@ -868,6 +1121,7 @@ void mainCode(int flag) {
 		getCellState();
 
 	}
+
 }
 
 void testCode(int flag) {
@@ -913,8 +1167,9 @@ void mouseClick(int btnClicked, int state, int click_x, int click_y) {
 			}
 		}
 
-		if (wait4move) {//rooks
+		if (wait4move) {
 
+			//rooks
 			if (flag == 0 || flag == 7) {
 
 				int cellNo = chessPiece[flag].atCellNo;
@@ -977,10 +1232,257 @@ void mouseClick(int btnClicked, int state, int click_x, int click_y) {
 				}
 			}
 
+			//knights
+			if (flag == 1 || flag == 6) {
+				int count = 8;
+				while (count < 16 && chessPiece[flag].atCellNo + count < 64)
+					count += 8;
+
+				//up
+				if (count == 16) {
+					if ((chessPiece[flag].atCellNo + count + 1) % 8 != 0 && (chessPiece[flag].atCellNo + count + 1) < 64 &&
+						!cellUsed[chessPiece[flag].atCellNo + count + 1].used)
+						if (mouseX > cellUsed[chessPiece[flag].atCellNo + count + 1].startX &&
+							mouseX < cellUsed[chessPiece[flag].atCellNo + count + 1].startX + pieceWidth_x  &&
+							mouseY > cellUsed[chessPiece[flag].atCellNo + count + 1].startY &&
+							mouseY < cellUsed[chessPiece[flag].atCellNo + count + 1].startY + pieceHeight_y) {
+							chessPiece[flag].moveStatus = true;
+							wait4move = false;
+							chessPiece[flag].movePos = 'u';
+							chessPiece[flag].movePosDiag = 'r';
+							chessPiece[flag].movCount += count + 1;
+						}
+
+					if ((chessPiece[flag].atCellNo + count - 1) % 8 != 7 && (chessPiece[flag].atCellNo + count - 1) < 64 &&
+						!cellUsed[chessPiece[flag].atCellNo + count - 1].used) {
+						if (mouseX > cellUsed[chessPiece[flag].atCellNo + count - 1].startX &&
+							mouseX < cellUsed[chessPiece[flag].atCellNo + count - 1].startX + pieceWidth_x  &&
+							mouseY > cellUsed[chessPiece[flag].atCellNo + count - 1].startY &&
+							mouseY < cellUsed[chessPiece[flag].atCellNo + count - 1].startY + pieceHeight_y) {
+							chessPiece[flag].moveStatus = true;
+							wait4move = false;
+							chessPiece[flag].movePos = 'u';
+							chessPiece[flag].movePosDiag = 'l';
+							chessPiece[flag].movCount += count - 1;
+						}
+					}
+
+				}
+
+				//down
+				count = -8;
+				while (count > -16 && chessPiece[flag].atCellNo + count > 0)
+					count -= 8;
+
+				if (count == -16) {
+					if ((chessPiece[flag].atCellNo + count + 1) % 8 != 0 && (chessPiece[flag].atCellNo + count + 1) > 0 &&
+						!cellUsed[chessPiece[flag].atCellNo + count + 1].used)
+						if (mouseX > cellUsed[chessPiece[flag].atCellNo + count + 1].startX &&
+							mouseX < cellUsed[chessPiece[flag].atCellNo + count + 1].startX + pieceWidth_x  &&
+							mouseY > cellUsed[chessPiece[flag].atCellNo + count + 1].startY &&
+							mouseY < cellUsed[chessPiece[flag].atCellNo + count + 1].startY + pieceHeight_y) {
+							chessPiece[flag].moveStatus = true;
+							wait4move = false;
+							chessPiece[flag].movePos = 'd';
+							chessPiece[flag].movePosDiag = 'r';
+							chessPiece[flag].movCount += count + 1;
+						}
+
+					if ((chessPiece[flag].atCellNo + count - 1) % 8 != 7 && (chessPiece[flag].atCellNo + count - 1) > 0 &&
+						!cellUsed[chessPiece[flag].atCellNo + count - 1].used) {
+						if (mouseX > cellUsed[chessPiece[flag].atCellNo + count - 1].startX &&
+							mouseX < cellUsed[chessPiece[flag].atCellNo + count - 1].startX + pieceWidth_x  &&
+							mouseY > cellUsed[chessPiece[flag].atCellNo + count - 1].startY &&
+							mouseY < cellUsed[chessPiece[flag].atCellNo + count - 1].startY + pieceHeight_y) {
+							chessPiece[flag].moveStatus = true;
+							wait4move = false;
+							chessPiece[flag].movePos = 'd';
+							chessPiece[flag].movePosDiag = 'l';
+							chessPiece[flag].movCount += count - 1;
+						}
+					}
+				}
+
+				//right
+				count = 1;
+				if ((chessPiece[flag].atCellNo) % 8 != 7) {
+					while (count < 2 && chessPiece[flag].atCellNo + count < 64) {
+						if ((chessPiece[flag].atCellNo + count) % 8 == 7) {
+							break;
+						}
+						count++;
+					}
+				}
+
+				if (count == 2) {
+					if ((chessPiece[flag].atCellNo + count + 8) < 64 && !cellUsed[chessPiece[flag].atCellNo + count + 8].used) {
+						if (mouseX > cellUsed[chessPiece[flag].atCellNo + count + 8].startX &&
+							mouseX < cellUsed[chessPiece[flag].atCellNo + count + 8].startX + pieceWidth_x  &&
+							mouseY > cellUsed[chessPiece[flag].atCellNo + count + 8].startY &&
+							mouseY < cellUsed[chessPiece[flag].atCellNo + count + 8].startY + pieceHeight_y) {
+							chessPiece[flag].moveStatus = true;
+							wait4move = false;
+							chessPiece[flag].movePos = 'r';
+							chessPiece[flag].movePosDiag = 'u';
+							chessPiece[flag].movCount += count + 8;
+						}
+					}
+
+
+					if ((chessPiece[flag].atCellNo + count - 8) >= 0 && !cellUsed[chessPiece[flag].atCellNo + count - 8].used) {
+						if (mouseX > cellUsed[chessPiece[flag].atCellNo + count - 8].startX &&
+							mouseX < cellUsed[chessPiece[flag].atCellNo + count - 8].startX + pieceWidth_x  &&
+							mouseY > cellUsed[chessPiece[flag].atCellNo + count - 8].startY &&
+							mouseY < cellUsed[chessPiece[flag].atCellNo + count - 8].startY + pieceHeight_y) {
+							chessPiece[flag].moveStatus = true;
+							wait4move = false;
+							chessPiece[flag].movePos = 'r';
+							chessPiece[flag].movePosDiag = 'd';
+							chessPiece[flag].movCount += count - 8;
+						}
+					}
+				}
+
+				//left
+				count = -1;
+				if ((chessPiece[flag].atCellNo) % 8 != 0) {
+					while (count > -2 && chessPiece[flag].atCellNo + count < 64) {
+						if ((chessPiece[flag].atCellNo + count) % 8 == 0) {
+							break;
+						}
+						count--;
+					}
+
+					if (count == -2) {
+						if ((chessPiece[flag].atCellNo + count + 8) < 64 && !cellUsed[chessPiece[flag].atCellNo + count + 8].used)
+						{
+							if (mouseX > cellUsed[chessPiece[flag].atCellNo + count + 8].startX &&
+								mouseX < cellUsed[chessPiece[flag].atCellNo + count + 8].startX + pieceWidth_x  &&
+								mouseY > cellUsed[chessPiece[flag].atCellNo + count + 8].startY &&
+								mouseY < cellUsed[chessPiece[flag].atCellNo + count + 8].startY + pieceHeight_y) {
+								chessPiece[flag].moveStatus = true;
+								wait4move = false;
+								chessPiece[flag].movePos = 'l';
+								chessPiece[flag].movePosDiag = 'u';
+								chessPiece[flag].movCount += count + 8;
+							}
+						}
+
+						if ((chessPiece[flag].atCellNo + count - 8) >= 0 && !cellUsed[chessPiece[flag].atCellNo + count - 8].used)
+						{
+							if (mouseX > cellUsed[chessPiece[flag].atCellNo + count - 8].startX &&
+								mouseX < cellUsed[chessPiece[flag].atCellNo + count - 8].startX + pieceWidth_x  &&
+								mouseY > cellUsed[chessPiece[flag].atCellNo + count - 8].startY &&
+								mouseY < cellUsed[chessPiece[flag].atCellNo + count - 8].startY + pieceHeight_y) {
+								chessPiece[flag].moveStatus = true;
+								wait4move = false;
+								chessPiece[flag].movePos = 'l';
+								chessPiece[flag].movePosDiag = 'd';
+								chessPiece[flag].movCount += count - 8;
+							}
+						}
+					}
+				}
+			}
+
+			//bishops
+			if (flag == 2 || flag == 5) {
+				int cellNo = chessPiece[flag].atCellNo;
+				int count = 9, cellCountX = 1, cellCountY = 8;
+
+				while (cellNo < 64 && cellNo >= 0 && cellNo % 8 != 7)
+				{
+					if (mouseX > cellUsed[chessPiece[flag].atCellNo + cellCountX].startX &&
+						mouseX < cellUsed[chessPiece[flag].atCellNo + cellCountX].startX + pieceWidth_x  &&
+						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCountY].startY &&
+						mouseY < cellUsed[chessPiece[flag].atCellNo + cellCountY].startY + pieceHeight_y) {
+						chessPiece[flag].moveStatus = true;
+						wait4move = false;
+						chessPiece[flag].movePos = 'r';
+						chessPiece[flag].movePosDiag = 'u';
+						chessPiece[flag].movCount = cellCountX + cellCountY;
+						break;
+					}
+
+					count += 9;
+					cellCountX++;
+					cellCountY += 8;
+					cellNo += 9;
+				}
+
+				cellNo = chessPiece[flag].atCellNo;
+				count = -7, cellCountX = 1, cellCountY = -7;
+				while (cellNo < 64 && cellNo >= 0 && cellNo % 8 != 7)
+				{
+					if (mouseX > cellUsed[chessPiece[flag].atCellNo + cellCountX].startX &&
+						mouseX < cellUsed[chessPiece[flag].atCellNo + cellCountX].startX + pieceWidth_x  &&
+						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCountY].startY &&
+						mouseY < cellUsed[chessPiece[flag].atCellNo + cellCountY].startY + pieceHeight_y) {
+						chessPiece[flag].moveStatus = true;
+						wait4move = false;
+						chessPiece[flag].movePos = 'r';
+						chessPiece[flag].movePosDiag = 'd';
+						chessPiece[flag].movCount = cellCountY;
+						break;
+					}
+
+					count -= 7;
+					cellCountX++;
+					cellCountY -= 7;
+					cellNo -= 7;
+				}
+
+				cellNo = chessPiece[flag].atCellNo;
+				count = 7, cellCountX = -1, cellCountY = 7;
+				while (cellNo < 64 && cellNo >= 0 && cellNo % 8 != 0)
+				{
+					if (mouseX > cellUsed[chessPiece[flag].atCellNo + cellCountX].startX &&
+						mouseX < cellUsed[chessPiece[flag].atCellNo + cellCountX].startX + pieceWidth_x  &&
+						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCountY].startY &&
+						mouseY < cellUsed[chessPiece[flag].atCellNo + cellCountY].startY + pieceHeight_y) {
+						chessPiece[flag].moveStatus = true;
+						wait4move = false;
+						chessPiece[flag].movePos = 'l';
+						chessPiece[flag].movePosDiag = 'u';
+						chessPiece[flag].movCount = cellCountY;
+						break;
+					}
+
+					count += 7;
+					cellCountX--;
+					cellCountY += 7;
+					cellNo += 7;
+				}
+
+				cellNo = chessPiece[flag].atCellNo;
+				count = -9, cellCountX = -1, cellCountY = -8;
+				while (cellNo < 64 && cellNo >= 0 && cellNo % 8 != 0)
+				{
+					if (mouseX > cellUsed[chessPiece[flag].atCellNo + cellCountX].startX &&
+						mouseX < cellUsed[chessPiece[flag].atCellNo + cellCountX].startX + pieceWidth_x  &&
+						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCountY].startY &&
+						mouseY < cellUsed[chessPiece[flag].atCellNo + cellCountY].startY + pieceHeight_y) {
+						chessPiece[flag].moveStatus = true;
+						wait4move = false;
+						chessPiece[flag].movePos = 'l';
+						chessPiece[flag].movePosDiag = 'd';
+						chessPiece[flag].movCount = cellCountX + cellCountY;
+						break;
+					}
+
+					count -= 9;
+					cellCountX--;
+					cellCountY -= 8;
+					cellNo -= 9;
+				}
+			}
+
+			//queen
 			if (flag == 3) {
 				int cellNo = chessPiece[flag].atCellNo;
 				int count = 1;
-				while (cellNo % 8 != 7)
+				bool endMov = false;
+				while (cellNo % 8 != 7 && !endMov)
 				{
 					if ((chessPiece[flag].x + count) < 8) {
 						if (mouseX > cellUsed[chessPiece[flag].atCellNo + count].startX && mouseX < cellUsed[chessPiece[flag].atCellNo + count].startX + pieceWidth_x  &&
@@ -988,56 +1490,169 @@ void mouseClick(int btnClicked, int state, int click_x, int click_y) {
 							chessPiece[flag].moveStatus = true;
 							wait4move = false;
 							chessPiece[flag].movePos = 'r';
+							chessPiece[flag].movePosDiag = 's';
 							chessPiece[flag].movCount = count;
+							endMov = true;
+							break;
 						}
 					}
 					count++;
 					cellNo++;
 				}
 
+				cellNo = chessPiece[flag].atCellNo;
 				count = -1;
-				while (cellNo % 8 != 0) {
+				while (cellNo % 8 != 0 && !endMov) {
 					if ((chessPiece[flag].x + count) >= 0) {
 						if (mouseX > cellUsed[chessPiece[flag].atCellNo + count].startX && mouseX < cellUsed[chessPiece[flag].atCellNo + count].startX + pieceWidth_x  &&
 							mouseY > cellUsed[chessPiece[flag].atCellNo].startY && mouseY < cellUsed[chessPiece[flag].atCellNo].startY + pieceHeight_y) {
 							chessPiece[flag].moveStatus = true;
 							wait4move = false;
 							chessPiece[flag].movePos = 'l';
+							chessPiece[flag].movePosDiag = 's';
 							chessPiece[flag].movCount = count;
+							endMov = true;
+							break;
 						}
 					}
 					count--;
 					cellNo--;
 				}
 
+				cellNo = chessPiece[flag].atCellNo;
 				count = 1;
 				int cellCount = 8;
-				while ((chessPiece[flag].y + count) < 8) {
+				while ((chessPiece[flag].y + count) < 8 && !endMov) {
 					if (mouseX > cellUsed[chessPiece[flag].atCellNo].startX && mouseX < cellUsed[chessPiece[flag].atCellNo].startX + pieceWidth_x  &&
 						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCount].startY &&  mouseY < cellUsed[chessPiece[flag].atCellNo + cellCount].startY + pieceHeight_y) {
 						chessPiece[flag].moveStatus = true;
 						wait4move = false;
 						chessPiece[flag].movePos = 'u';
+						chessPiece[flag].movePosDiag = 's';
 						chessPiece[flag].movCount = cellCount;
+						endMov = true;
+						break;
 					}
 					count++;
 					cellCount += 8;
+					cellNo += cellCount;
 				}
+
+				cellNo = chessPiece[flag].atCellNo;
 				count = -1;
 				cellCount = -8;
-				while ((chessPiece[flag].y + count) >= 0) {
+				while ((chessPiece[flag].y + count) >= 0 && !endMov) {
 					if (mouseX > cellUsed[chessPiece[flag].atCellNo].startX && mouseX < cellUsed[chessPiece[flag].atCellNo].startX + pieceWidth_x  &&
 						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCount].startY &&  mouseY < cellUsed[chessPiece[flag].atCellNo + cellCount].startY + pieceHeight_y) {
 						chessPiece[flag].moveStatus = true;
 						wait4move = false;
 						chessPiece[flag].movePos = 'd';
+						chessPiece[flag].movePosDiag = 's';
 						chessPiece[flag].movCount = cellCount;
+						endMov = true;
+						break;
 					}
 					count--;
 					cellCount -= 8;
+					cellNo += cellCount;
+				}
+
+				cellNo = chessPiece[flag].atCellNo;
+				count = 9;
+				int cellCountX = 1, cellCountY = 8;
+
+				while (cellNo < 64 && cellNo >= 0 && cellNo % 8 != 7 && !endMov)
+				{
+					if (mouseX > cellUsed[chessPiece[flag].atCellNo + cellCountX].startX &&
+						mouseX < cellUsed[chessPiece[flag].atCellNo + cellCountX].startX + pieceWidth_x  &&
+						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCountY].startY &&
+						mouseY < cellUsed[chessPiece[flag].atCellNo + cellCountY].startY + pieceHeight_y) {
+						chessPiece[flag].moveStatus = true;
+						wait4move = false;
+						chessPiece[flag].movePos = 'r';
+						chessPiece[flag].movePosDiag = 'u';
+						chessPiece[flag].movCount = cellCountX + cellCountY;
+						endMov = true;
+						break;
+					}
+
+					count += 9;
+					cellCountX++;
+					cellCountY += 8;
+					cellNo += 9;
+				}
+
+				cellNo = chessPiece[flag].atCellNo;
+				count = -7, cellCountX = 1, cellCountY = -7;
+				while (cellNo < 64 && cellNo >= 0 && cellNo % 8 != 7 && !endMov)
+				{
+					if (mouseX > cellUsed[chessPiece[flag].atCellNo + cellCountX].startX &&
+						mouseX < cellUsed[chessPiece[flag].atCellNo + cellCountX].startX + pieceWidth_x  &&
+						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCountY].startY &&
+						mouseY < cellUsed[chessPiece[flag].atCellNo + cellCountY].startY + pieceHeight_y) {
+						chessPiece[flag].moveStatus = true;
+						wait4move = false;
+						chessPiece[flag].movePos = 'r';
+						chessPiece[flag].movePosDiag = 'd';
+						chessPiece[flag].movCount = cellCountY;
+						endMov = true;
+						break;
+					}
+
+					count -= 7;
+					cellCountX++;
+					cellCountY -= 7;
+					cellNo -= 7;
+				}
+
+				cellNo = chessPiece[flag].atCellNo;
+				count = 7, cellCountX = -1, cellCountY = 7;
+				while (cellNo < 64 && cellNo >= 0 && cellNo % 8 != 0 && !endMov)
+				{
+					if (mouseX > cellUsed[chessPiece[flag].atCellNo + cellCountX].startX &&
+						mouseX < cellUsed[chessPiece[flag].atCellNo + cellCountX].startX + pieceWidth_x  &&
+						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCountY].startY &&
+						mouseY < cellUsed[chessPiece[flag].atCellNo + cellCountY].startY + pieceHeight_y) {
+						chessPiece[flag].moveStatus = true;
+						wait4move = false;
+						chessPiece[flag].movePos = 'l';
+						chessPiece[flag].movePosDiag = 'u';
+						chessPiece[flag].movCount = cellCountY;
+						endMov = true;
+						break;
+					}
+
+					count += 7;
+					cellCountX--;
+					cellCountY += 7;
+					cellNo += 7;
+				}
+
+				cellNo = chessPiece[flag].atCellNo;
+				count = -9, cellCountX = -1, cellCountY = -8;
+				while (cellNo < 64 && cellNo >= 0 && cellNo % 8 != 0 && !endMov)
+				{
+					if (mouseX > cellUsed[chessPiece[flag].atCellNo + cellCountX].startX &&
+						mouseX < cellUsed[chessPiece[flag].atCellNo + cellCountX].startX + pieceWidth_x  &&
+						mouseY > cellUsed[chessPiece[flag].atCellNo + cellCountY].startY &&
+						mouseY < cellUsed[chessPiece[flag].atCellNo + cellCountY].startY + pieceHeight_y) {
+						chessPiece[flag].moveStatus = true;
+						wait4move = false;
+						chessPiece[flag].movePos = 'l';
+						chessPiece[flag].movePosDiag = 'd';
+						chessPiece[flag].movCount = cellCountX + cellCountY;
+						endMov = true;
+						break;
+					}
+
+					count -= 9;
+					cellCountX--;
+					cellCountY -= 8;
+					cellNo -= 9;
 				}
 			}
 
+			//king
 			if (flag == 4) {//king
 				if ((chessPiece[flag].x + 1) < 8) {
 					if (mouseX > cellUsed[chessPiece[flag].atCellNo + 1].startX && mouseX < cellUsed[chessPiece[flag].atCellNo + 1].startX + pieceWidth_x  &&
@@ -1076,6 +1691,7 @@ void mouseClick(int btnClicked, int state, int click_x, int click_y) {
 				}
 			}
 
+			//pawns
 			if (flag >= 8 && flag <= 15) {//pawns
 				if ((chessPiece[flag].y + 1) < 8) {
 					if (mouseX > cellUsed[chessPiece[flag].atCellNo].startX && mouseX < cellUsed[chessPiece[flag].atCellNo].startX + pieceWidth_x  &&
@@ -1092,12 +1708,58 @@ void mouseClick(int btnClicked, int state, int click_x, int click_y) {
 	if (btnClicked == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
 	{
 		flag = 99;
-		//reset();
-		//startMain = true;
-		//initialize();
 	}
 	glutPostRedisplay();
 }
+
+void keyClick(unsigned char key, int key_x, int key_ykey) {
+	if (key == 'r' || key == 'R') {
+		flag = 99;
+		reset();
+		startMain = true;
+		initialize();
+	}
+	/*
+		if (key == 'w' || key == 'W') {
+			int count = 8;
+			if (!cellUsed[chessPiece[1].atCellNo + count].used && (chessPiece[1].atCellNo + count) < 64 && (chessPiece[1].atCellNo + count) >= 0) {
+				cellUsed[chessPiece[1].atCellNo].used = false;
+				chessPiece[1].atCellNo+=count;
+				cellUsed[chessPiece[1].atCellNo].used = true;
+			}
+		}
+
+		if (key == 'a' || key == 'a') {
+			int count = -1;
+			if (!cellUsed[chessPiece[1].atCellNo + count].used && (chessPiece[1].atCellNo + count) < 64 && (chessPiece[1].atCellNo + count) >= 0) {
+				cellUsed[chessPiece[1].atCellNo].used = false;
+				chessPiece[1].atCellNo += count;
+				cellUsed[chessPiece[1].atCellNo].used = true;
+			}
+		}
+
+		if (key == 's' || key == 'S') {
+			int count = -8;
+			if (!cellUsed[chessPiece[1].atCellNo + count].used && (chessPiece[1].atCellNo + count) < 64 && (chessPiece[1].atCellNo + count) >= 0) {
+				cellUsed[chessPiece[1].atCellNo].used = false;
+				chessPiece[1].atCellNo += count;
+				cellUsed[chessPiece[1].atCellNo].used = true;
+			}
+		}
+
+		if (key == 'd' || key == 'D') {
+			int count = 1;
+			if (!cellUsed[chessPiece[1].atCellNo + count].used && (chessPiece[1].atCellNo + count) < 64 && (chessPiece[1].atCellNo + count) >= 0) {
+				cellUsed[chessPiece[1].atCellNo].used = false;
+				chessPiece[1].atCellNo += count;
+				cellUsed[chessPiece[1].atCellNo].used = true;
+			}
+		}*/
+	glutPostRedisplay();
+}
+
+//	8	9	10	11	12	13	14	15
+//	0	1	2	3	4	5	6	7
 
 int main(int argc, char *argv[])
 {
@@ -1110,7 +1772,7 @@ int main(int argc, char *argv[])
 	if (startMain)
 		initialize();
 	glutDisplayFunc(displayPiece);
-	//glutKeyboardFunc(keyClick);
+	glutKeyboardFunc(keyClick);
 	glutMouseFunc(mouseClick);
 	glutMainLoop();
 }
